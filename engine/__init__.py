@@ -1,0 +1,1 @@
+from .objects.triangle import Triangle
