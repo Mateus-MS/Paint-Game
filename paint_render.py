@@ -18,12 +18,8 @@ sleep(.2)
 points = [
     Vector3(-100,  100, 10),
     Vector3(-100, -100, 10),
-    Vector3( 100, -100, 10),
-    Vector3( 100,  100, 10)
+    Vector3( 100, -100, 10)
 ]
 
-for i in range(0, len(points)):
-    if i + 2 > len(points):
-        drawLine(points[i].project(fov), points[0].project(fov))
-    else :
-        drawLine(points[i].project(fov), points[i + 1].project(fov))
+test = Triangle(*points)
+test.render(fov)

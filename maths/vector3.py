@@ -14,6 +14,7 @@ class Vector3:
         self._x = x
         self._y = y
         self._z = z
+        self.isVector3 = True
         self.arr = [x, y, z]
 
     def __get_x(self):
