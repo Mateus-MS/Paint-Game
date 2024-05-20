@@ -1,4 +1,6 @@
 from .vector2 import Vector2
+from .matrix import Matrix
+import math
 import numbers
 
 class Vector3:
@@ -50,18 +52,74 @@ class Vector3:
     
     z = property(__get_z, __set_z)
 
+
     def print(self):
         print(f'x: {self.x}, y: {self.y}, z: {self.z}')
 
     def forceToVector2(self):
         return Vector2(self.x, self.y)
     
-    def project(self, fov):
+    def OrthographicProject(self):
+        projectionMatrix = Matrix([ 
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 0]
+        ])
 
-        if not isinstance(fov, numbers.Number):
-            raise TypeError(f"Trying to project with a {type(fov)} as FOV.")
+        vecMat    = self.convertToMatrix()
+        projected = projectionMatrix.mul(vecMat)
+        vec_projected = Vector3(projected.matrix[0][0], projected.matrix[1][0], projected.matrix[2][0])
 
-        x = (self.x * fov) / (self.z + fov)
-        y = (self.y * fov) / (self.z + fov)
+        return vec_projected
+    
+    def RotateZ(self, angle):
+        if not isinstance(angle, numbers.Number):
+            raise TypeError(f"Trying to project with a {type(angle)} as Angle.")
 
-        return Vector2(x, y)
+        rotationMatrix = Matrix([ 
+            [math.cos(angle), -math.sin(angle), 0],
+            [math.sin(angle),  math.cos(angle), 0],
+            [0, 0, 1]
+        ])
+
+        rotated = rotationMatrix.mul(self.convertToMatrix())
+        vec_rotated = Vector3(rotated.matrix[0][0], rotated.matrix[1][0], rotated.matrix[2][0])
+        return vec_rotated
+    
+    def RotateX(self, angle):
+        if not isinstance(angle, numbers.Number):
+            raise TypeError(f"Trying to project with a {type(angle)} as Angle.")
+
+        rotationMatrix = Matrix([ 
+            [1, 0, 0],
+            [0, math.cos(angle), -math.sin(angle)],
+            [0, math.sin(angle),  math.cos(angle)]
+        ])
+
+        rotated = rotationMatrix.mul(self.convertToMatrix())
+        vec_rotated = Vector3(rotated.matrix[0][0], rotated.matrix[1][0], rotated.matrix[2][0])
+        return vec_rotated
+    
+    def RotateY(self, angle):
+        if not isinstance(angle, numbers.Number):
+            raise TypeError(f"Trying to project with a {type(angle)} as Angle.")
+
+        rotationMatrix = Matrix([ 
+            [math.cos(angle), 0, -math.sin(angle)],
+            [0, 1, 0],
+            [math.sin(angle), 0,  math.cos(angle)]
+        ])
+
+        rotated = rotationMatrix.mul(self.convertToMatrix())
+        vec_rotated = Vector3(rotated.matrix[0][0], rotated.matrix[1][0], rotated.matrix[2][0])
+        return vec_rotated
+
+    # def Rotate(self, direction, angle):
+
+
+    def convertToMatrix(self):
+        return Matrix([
+            [self.x],
+            [self.y],
+            [self.z]
+        ])

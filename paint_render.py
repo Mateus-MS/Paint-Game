@@ -1,4 +1,5 @@
 import pyautogui as py
+import keyboard
 from time import sleep
 
 from engine.draw import *
@@ -22,4 +23,18 @@ points = [
 ]
 
 test = Triangle(*points)
-test.render(fov)
+renderRunning = True
+
+while renderRunning:
+
+    if keyboard.is_pressed('q'):
+        renderRunning = False
+
+    py.press('p')
+
+    test.render()
+    test.angle += 0.1
+    sleep(.1)
+
+    py.hotkey('ctrl', 'a')
+    py.press('del')

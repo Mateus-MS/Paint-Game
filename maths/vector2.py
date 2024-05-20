@@ -1,4 +1,6 @@
+from .matrix import Matrix
 import numbers
+import math
 
 class Vector2:
     def __init__(self, x, y):
@@ -52,6 +54,25 @@ class Vector2:
             raise TypeError(f"Tying to divide a {type(value)} by a Vector2.")
         
         return Vector2(self.x / value.x, self.y / value.y)
+    
+    def convertToMatrix(self):
+        return Matrix([
+            [self.x,],
+            [self.y]
+        ])
+
+    def RotateZ(self, angle):
+        if not isinstance(angle, numbers.Number):
+            raise TypeError(f"Trying to project with a {type(angle)} as Angle.")
+
+        rotationMatrix = Matrix([ 
+            [math.cos(angle), -math.sin(angle)],
+            [math.sin(angle),  math.cos(angle)]
+        ])
+
+        rotated = rotationMatrix.mul(self.convertToMatrix())
+        vec_rotated = Vector2(rotated.matrix[0][0], rotated.matrix[1][0])
+        return vec_rotated
     
     def convertZeroAtCenter(self, screen):
         if not screen.isVector2:
