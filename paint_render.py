@@ -3,38 +3,31 @@ import keyboard
 from time import sleep
 
 from engine.draw import *
-from maths import Vector3
 from maths import Vector2
 
-from engine.objects.triangle import Triangle
+from engine.objects.cube import Cube
 
-py.PAUSE = 0.0001
+py.PAUSE = 0.001
 
 screenSize = Vector2(*py.size())
 fov        = 20
 
+cube = Cube()
+renderRunning = True
+
 py.hotkey("alt", "tab")
 sleep(.2)
 
-points = [
-    Vector3(-100,  100, 10),
-    Vector3(-100, -100, 10),
-    Vector3( 100, -100, 10)
-]
-
-test = Triangle(*points)
-renderRunning = True
+py.press("p")
 
 while renderRunning:
-
     if keyboard.is_pressed('q'):
         renderRunning = False
 
-    py.press('p')
+    py.hotkey('ctrl', 'shift', 'del')
+    py.hotkey('ctrl', 'shift', 'n')
 
-    test.render()
-    test.angle += 0.1
-    sleep(.1)
+    cube.render()
+    cube.angle += 0.13
 
-    py.hotkey('ctrl', 'a')
-    py.press('del')
+    sleep(.15)
