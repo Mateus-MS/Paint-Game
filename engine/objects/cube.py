@@ -1,7 +1,8 @@
 from maths import Vector3
 from engine.draw import *
+from .mesh import Mesh
 
-class Cube:
+class Cube(Mesh): 
     def __init__(self):
 
         self.vertex = [
@@ -55,21 +56,3 @@ class Cube:
             6, 7,
             7, 2
         ]
-
-        self.angle = 0
-
-    def render(self):
-
-        projecteds = []
-
-        for i in range(len(self.vertex)):
-            rotated  = self.vertex[i].RotateY(self.angle)
-            rotated  = rotated.RotateX(self.angle)
-            rotated  = rotated.RotateZ(self.angle)
-            projected = rotated.OrthographicProject()
-            vector_projected  = projected.forceToVector2()
-            projecteds.append(vector_projected)
-
-        for i in range(len(self.edges) - 1):
-            drawLine(projecteds[self.edges[i]], projecteds[self.edges[i + 1]])
-            i += 1
